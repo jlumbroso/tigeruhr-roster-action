@@ -11,7 +11,7 @@ RUN rm -rf /var/cache/apk/* \
         & apk add --update --no-cache git openssh \
         # python3 and pip from community repo
         # REF: https://stackoverflow.com/a/65365149/408734
-        & apk add --no-cache python3 py3-pip
+        & apk add --no-cache python3 py3-pip \
         # openssl + python headers for python-ldap
         # REF: https://stackoverflow.com/a/59580230
         & apk add --update --no-cache openldap-dev python3-dev
