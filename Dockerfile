@@ -1,25 +1,23 @@
-FROM alpine:3.10
+FROM alpine:3.16
 
 # Install recent versions of `git' and `ssh'
 # (with --no-cache the package index is not stored locally, keeping the container small)
 # https://stackoverflow.com/a/49119046/408734 
 
-RUN apk add --update --no-cache git openssh
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories
 
-# Adding VCS websites to SSH's known_hosts (thx @mike-es)
-# https://github.com/nodejs/docker-node/issues/1215#issuecomment-589971887
+RUN rm -rf /var/cache/apk/* \
+        & apk update \
+        & apk add --update --no-cache git openssh \
+        # openssl + python headers
+        # for python-ldap https://stackoverflow.com/a/59580230
+        & apk add --update --no-cache openldap-dev python3-dev
 
-RUN apk add --no-cache bind-tools \
-  # GitHub known hosts
-  && ssh-keyscan github.com > /etc/ssh/ssh_known_hosts \
-  && dig -t a +short github.com | grep ^[0-9] | xargs -r -n1 ssh-keyscan >> /etc/ssh/ssh_known_hosts \
-  # GitLab known hosts
-  && ssh-keyscan gitlab.com >> /etc/ssh/ssh_known_hosts \
-  && dig -t a +short gitlab.com | grep ^[0-9] | xargs -r -n1 ssh-keyscan >> /etc/ssh/ssh_known_hosts \
-  # BitBucket known hosts
-  && ssh-keyscan bitbucket.com >> /etc/ssh/ssh_known_hosts \
-  && dig -t a +short bitbucket.com | grep ^[0-9] | xargs -r -n1 ssh-keyscan >> /etc/ssh/ssh_known_hosts \
-  && apk del bind-tools
+RUN rm -rf /var/cache/apk/* \
+        & apk update \
+        & pip install --upgrade pip \
+        & pip install pipenv \
+        & pipenv install --dev --deploy
 
 COPY entrypoint.sh /entrypoint.sh
 

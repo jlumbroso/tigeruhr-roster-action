@@ -4,8 +4,12 @@ name: "TigerUHR CSV Roster Download"
 description: "Retrieves a live roster for a position from TigerUHR and saves it as a CSV file."
 
 inputs:
-  tigeruhr_api_key:
-    description: "TigerUHR API key."
+  tigeruhr_api_username:
+    description: "TigerUHR API username."
+    required: true
+
+  tigeruhr_api_password:
+    description: "TigerUHR API password."
     required: true
 
   tigeruhr_position:
