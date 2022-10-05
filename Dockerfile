@@ -9,8 +9,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repo
 RUN rm -rf /var/cache/apk/* \
         & apk update \
         & apk add --update --no-cache git openssh \
-        # openssl + python headers
-        # for python-ldap https://stackoverflow.com/a/59580230
+        # python3 and pip from community repo
+        # REF: https://stackoverflow.com/a/65365149/408734
+        & apk add --no-cache python3 py3-pip
+        # openssl + python headers for python-ldap
+        # REF: https://stackoverflow.com/a/59580230
         & apk add --update --no-cache openldap-dev python3-dev
 
 RUN rm -rf /var/cache/apk/* \
