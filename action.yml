@@ -1,0 +1,26 @@
+# See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+
+name: "TigerUHR CSV Roster Download"
+description: "Retrieves a live roster for a position from TigerUHR and saves it as a CSV file."
+
+inputs:
+  tigeruhr_api_key:
+    description: "TigerUHR API key."
+    required: true
+
+  tigeruhr_position:
+    description: "TigerUHR position."
+    required: true
+
+  roster_filename:
+    description: "Roster file to push."
+    required: false
+    default: "roster.csv"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+branding:
+  icon: "download-cloud"
+  color: "orange"
